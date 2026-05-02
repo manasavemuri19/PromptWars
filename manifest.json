@@ -1,0 +1,9 @@
+{
+  "name": "Flowdesk",
+  "short_name": "Flowdesk",
+  "description": "AI-powered team workflow visibility",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#3b82f6"
+}

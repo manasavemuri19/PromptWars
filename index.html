@@ -4,32 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flowdesk</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#3b82f6">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Flowdesk",
+      "description": "AI-powered team collaboration and workflow visibility tool",
+      "applicationCategory": "BusinessApplication"
+    }
+    </script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="system-banner" class="banner hidden"></div>
     <header class="app-header">
         <div class="container header-content">
             <h1>Flowdesk</h1>
-            <div class="api-settings">
-                <input type="password" id="api-key" placeholder="Gemini API Key" />
-                <button id="save-key" class="secondary-btn">Save</button>
-            </div>
         </div>
         <div class="tabs">
-            <button class="tab active" data-target="update-view">My Update</button>
-            <button class="tab" data-target="dashboard-view">Team View</button>
+            <button class="tab active" data-target="update-view" aria-label="Switch to your update form">My Update</button>
+            <button class="tab" data-target="dashboard-view" aria-label="Switch to team dashboard">Team View</button>
         </div>
     </header>
 
-    <main class="container">
+    <main id="main-content" class="container">
         <!-- Update View -->
         <section id="update-view" class="view active">
             <div class="update-form">
                 <div class="member-header">
-                    <select id="member-select" class="member-select-large">
+                    <label for="member-select" class="visually-hidden">Select Team Member</label>
+                    <select id="member-select" name="member-select" class="member-select-large" aria-label="Select Team Member">
                         <option value="Priya">Priya (Designer)</option>
                         <option value="Arjun">Arjun (Developer)</option>
                         <option value="Meera">Meera (Marketer)</option>
@@ -38,23 +48,23 @@
                 </div>
                 
                 <div class="input-group">
-                    <label>What are you working on today?</label>
-                    <textarea id="working-on" placeholder="just type naturally, no format needed" rows="2"></textarea>
+                    <label for="working-on">What are you working on today?</label>
+                    <textarea id="working-on" name="working-on" placeholder="just type naturally, no format needed" rows="2"></textarea>
                 </div>
                 
                 <div class="input-group">
-                    <label>Is anything blocking you?</label>
-                    <textarea id="blockers" placeholder="type 'nothing' if you're clear" rows="2"></textarea>
+                    <label for="blockers">Is anything blocking you?</label>
+                    <textarea id="blockers" name="blockers" placeholder="type 'nothing' if you're clear" rows="2"></textarea>
                 </div>
 
                 <div class="input-group">
-                    <label>What did you complete since yesterday?</label>
-                    <textarea id="completed" placeholder="even small wins count" rows="2"></textarea>
+                    <label for="completed">What did you complete since yesterday?</label>
+                    <textarea id="completed" name="completed" placeholder="even small wins count" rows="2"></textarea>
                 </div>
 
-                <button id="submit-btn" class="primary-btn">
+                <button id="submit-btn" class="primary-btn" aria-label="Submit your daily team update">
                     <span id="submit-text">Update the team</span>
-                    <span id="submit-loader" class="loader hidden"></span>
+                    <span id="submit-loader" class="loader hidden" aria-hidden="true"></span>
                 </button>
             </div>
         </section>
@@ -65,10 +75,13 @@
                 <div class="dashboard-main">
                     <div class="team-pulse">
                         <div class="pulse-header">
-                            <svg class="pulse-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                            <span class="pulse-label">Team Pulse</span>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <svg class="pulse-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                                <span class="pulse-label">Team Pulse</span>
+                            </div>
+                            <button id="weekly-summary-btn" class="secondary-btn" style="font-size: 12px; padding: 4px 10px;" aria-label="Generate weekly team summary">Generate Week Summary</button>
                         </div>
-                        <p id="pulse-text">Waiting for team updates...</p>
+                        <p id="pulse-text" role="status">Waiting for team updates...</p>
                     </div>
 
                     <div class="dashboard-columns">
@@ -79,7 +92,7 @@
                 <div class="dashboard-sidebar">
                     <div class="needs-attention-panel">
                         <div class="panel-header">
-                            <span class="red-dot"></span>
+                            <span class="red-dot" aria-hidden="true"></span>
                             <h3>Needs Attention</h3>
                         </div>
                         <div id="attention-list">
@@ -91,7 +104,34 @@
         </section>
     </main>
 
-    <button id="demo-btn" class="demo-btn">Demo Mode</button>
+    <button id="demo-btn" class="demo-btn" aria-label="Activate demo mode with sample team data">Demo Mode</button>
+
+    <div id="api-modal" class="modal-overlay hidden" role="dialog" aria-labelledby="api-modal-title" aria-modal="true">
+        <div class="modal-content">
+            <h2 id="api-modal-title">Enter your Gemini API Key</h2>
+            <p class="modal-subtext">Your key is stored only for this session and never sent to any server other than Google.</p>
+            <div class="input-group">
+                <label for="modal-api-key" class="visually-hidden">Gemini API Key</label>
+                <input type="password" id="modal-api-key" name="modal-api-key" placeholder="AIza..." autocomplete="off" aria-label="Gemini API Key" />
+                <span id="api-error" class="error-text hidden" role="alert">That doesn't look like a valid Gemini API key</span>
+            </div>
+            <button id="modal-submit-btn" class="primary-btn" aria-label="Start using Flowdesk">Start using Flowdesk</button>
+            <a href="https://aistudio.google.com" target="_blank" class="modal-link" aria-label="Get a free Gemini API key">Get a free API key at aistudio.google.com</a>
+        </div>
+    </div>
+
+    <div id="summary-modal" class="modal-overlay hidden" role="dialog" aria-labelledby="summary-modal-title" aria-modal="true">
+        <div class="modal-content summary-content">
+            <div class="summary-header">
+                <h2 id="summary-modal-title">Weekly Stakeholder Summary</h2>
+                <button id="close-summary-btn" class="close-btn" aria-label="Close summary modal">&times;</button>
+            </div>
+            <div class="summary-body">
+                <p id="summary-text" role="status">Generating summary...</p>
+            </div>
+            <button id="copy-summary-btn" class="secondary-btn" aria-label="Copy summary to clipboard">Copy to Clipboard</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
