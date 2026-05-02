@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flowdesk</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="container header-content">
+            <h1>Flowdesk</h1>
+            <div class="api-settings">
+                <input type="password" id="api-key" placeholder="Gemini API Key" />
+                <button id="save-key" class="secondary-btn">Save</button>
+            </div>
+        </div>
+        <div class="tabs">
+            <button class="tab active" data-target="update-view">My Update</button>
+            <button class="tab" data-target="dashboard-view">Team View</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Update View -->
+        <section id="update-view" class="view active">
+            <div class="update-form">
+                <div class="member-header">
+                    <select id="member-select" class="member-select-large">
+                        <option value="Priya">Priya (Designer)</option>
+                        <option value="Arjun">Arjun (Developer)</option>
+                        <option value="Meera">Meera (Marketer)</option>
+                        <option value="Rohan">Rohan (Founder)</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label>What are you working on today?</label>
+                    <textarea id="working-on" placeholder="just type naturally, no format needed" rows="2"></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label>Is anything blocking you?</label>
+                    <textarea id="blockers" placeholder="type 'nothing' if you're clear" rows="2"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>What did you complete since yesterday?</label>
+                    <textarea id="completed" placeholder="even small wins count" rows="2"></textarea>
+                </div>
+
+                <button id="submit-btn" class="primary-btn">
+                    <span id="submit-text">Update the team</span>
+                    <span id="submit-loader" class="loader hidden"></span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Dashboard View -->
+        <section id="dashboard-view" class="view hidden">
+            <div class="dashboard-layout">
+                <div class="dashboard-main">
+                    <div class="team-pulse">
+                        <div class="pulse-header">
+                            <svg class="pulse-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                            <span class="pulse-label">Team Pulse</span>
+                        </div>
+                        <p id="pulse-text">Waiting for team updates...</p>
+                    </div>
+
+                    <div class="dashboard-columns">
+                        <!-- Columns populated by JS -->
+                    </div>
+                </div>
+                
+                <div class="dashboard-sidebar">
+                    <div class="needs-attention-panel">
+                        <div class="panel-header">
+                            <span class="red-dot"></span>
+                            <h3>Needs Attention</h3>
+                        </div>
+                        <div id="attention-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button id="demo-btn" class="demo-btn">Demo Mode</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
