@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * CONFIG
  * Application constants, API configuration, and Enums
@@ -31,8 +33,22 @@ const STATE = {
  * Functions related to external data fetching and retries
  */
 
-// SECURITY NOTE: API key is stored in sessionStorage (tab-scoped, never persisted)
 // and transmitted only directly to Google's API endpoint.
+
+/**
+ * @description Sanitizes string to prevent XSS attacks
+ * @param {string} str - Raw string
+ * @returns {string} Sanitized string
+ */
+function escapeHTML(str) {
+    if (!str) return '';
+    return str.toString()
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
 
 /**
  * @description Safely parses JSON strings, resilient to markdown blocks
@@ -205,7 +221,7 @@ function generateTaskCardHtml(task, memberName, index, flashInfo) {
 
     let blockerHtml = '';
     if (statusText === CONFIG.STATUSES.BLOCKED) {
-        blockerHtml = `<div class="blocker-section"><strong>Blocked by:</strong> ${task.blocker || 'Needs unblocking'} <br>`;
+        blockerHtml = `<div class="blocker-section"><strong>Blocked by:</strong> ${escapeHTML(task.blocker || 'Needs unblocking')} <br>`;
         blockerHtml += `<button class="resolve-btn" aria-label="Mark this blocker as resolved">Resolve Blocker</button>`;
         blockerHtml += `</div>`;
     }
@@ -230,9 +246,9 @@ function generateTaskCardHtml(task, memberName, index, flashInfo) {
     `;
 
     return `
-        <div class="task-card fade-in ${extraCardClass} ${flashClass}" style="animation-delay: ${delay}s" data-member="${memberName}" data-task-index="${index}">
+        <div class="task-card fade-in ${extraCardClass} ${flashClass}" style="animation-delay: ${delay}s" data-member="${escapeHTML(memberName)}" data-task-index="${index}">
             <span class="status-tag ${tagClass}" role="status" aria-label="Task status: ${statusText}">${icon}${statusText}</span>
-            <p>${task.task}</p>
+            <p>${escapeHTML(task.task)}</p>
             ${blockerHtml}
             ${reactionsHtml}
         </div>
@@ -282,10 +298,10 @@ function generateMemberColumnHtml(name, data, cardsHtml) {
     return `
         <div class="member-column fade-in ${extraEmptyClass}">
             <div class="column-header">
-                <div class="member-avatar">${initial}</div>
+                <div class="member-avatar">${escapeHTML(initial)}</div>
                 <div class="column-header-info">
-                    <h3 style="font-size: 16px; font-weight: 600;">${name}</h3>
-                    <span style="font-size: 13px; color: var(--text-secondary);">${data.role}</span>
+                    <h3 style="font-size: 16px; font-weight: 600;">${escapeHTML(name)}</h3>
+                    <span style="font-size: 13px; color: var(--text-secondary);">${escapeHTML(data.role)}</span>
                 </div>
             </div>
             ${progressHtml}
@@ -309,9 +325,9 @@ function generateAttentionItemHtml(task, memberName, index) {
 
     return `
         <div class="attention-item fade-in ${borderClass}" style="animation-delay: ${delay}s">
-            <span class="attention-member">${memberName}</span>
-            <div class="attention-task">${task.task}</div>
-            <div class="attention-unblock"><strong>Needed:</strong> ${unblockText}</div>
+            <span class="attention-member">${escapeHTML(memberName)}</span>
+            <div class="attention-task">${escapeHTML(task.task)}</div>
+            <div class="attention-unblock"><strong>Needed:</strong> ${escapeHTML(unblockText)}</div>
         </div>
     `;
 }
