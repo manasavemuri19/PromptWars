@@ -25,7 +25,13 @@
     <div id="system-banner" class="banner hidden"></div>
     <header class="app-header">
         <div class="container header-content">
-            <h1>Flowdesk</h1>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="live-dot" aria-hidden="true"></div>
+                <div>
+                    <h1>Flowdesk</h1>
+                    <span class="tagline">Team clarity, without the meetings</span>
+                </div>
+            </div>
         </div>
         <div class="tabs">
             <button class="tab active" data-target="update-view" aria-label="Switch to your update form">My Update</button>
@@ -79,7 +85,10 @@
                                 <svg class="pulse-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                                 <span class="pulse-label">Team Pulse</span>
                             </div>
-                            <button id="weekly-summary-btn" class="secondary-btn" style="font-size: 12px; padding: 4px 10px;" aria-label="Generate weekly team summary">Generate Week Summary</button>
+                            <div style="display: flex; gap: 8px;">
+                                <button id="digest-btn" class="secondary-btn" style="font-size: 12px; padding: 4px 10px;" aria-label="Generate shareable daily digest">Daily Digest</button>
+                                <button id="weekly-summary-btn" class="secondary-btn" style="font-size: 12px; padding: 4px 10px;" aria-label="Generate weekly team summary">Generate Week Summary</button>
+                            </div>
                         </div>
                         <p id="pulse-text" role="status">Waiting for team updates...</p>
                     </div>
@@ -104,7 +113,7 @@
         </section>
     </main>
 
-    <button id="demo-btn" class="demo-btn" aria-label="Activate demo mode with sample team data">Demo Mode</button>
+    <button id="demo-btn" class="demo-btn" aria-label="Activate demo mode with sample team data">⚡ Demo</button>
 
     <div id="api-modal" class="modal-overlay hidden" role="dialog" aria-labelledby="api-modal-title" aria-modal="true">
         <div class="modal-content">
@@ -130,6 +139,19 @@
                 <p id="summary-text" role="status">Generating summary...</p>
             </div>
             <button id="copy-summary-btn" class="secondary-btn" aria-label="Copy summary to clipboard">Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <div id="digest-modal" class="modal-overlay hidden" role="dialog" aria-labelledby="digest-modal-title" aria-modal="true">
+        <div class="modal-content summary-content">
+            <div class="summary-header">
+                <h2 id="digest-modal-title">Smart Daily Digest</h2>
+                <button id="close-digest-btn" class="close-btn" aria-label="Close digest modal">&times;</button>
+            </div>
+            <div class="summary-body">
+                <p id="digest-text" role="status">Crafting your digest...</p>
+            </div>
+            <button id="copy-digest-btn" class="secondary-btn" aria-label="Copy digest to clipboard">Copy Message</button>
         </div>
     </div>
 
